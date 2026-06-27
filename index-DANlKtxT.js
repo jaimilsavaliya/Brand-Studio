@@ -14992,6 +14992,10 @@ var I = {
     "Instagram Story (1080x1920)": { w: 1080, h: 1920 },
     "Website Hero (1920x1080)": { w: 1920, h: 1080 },
     "LinkedIn Post (1200x627)": { w: 1200, h: 627 },
+    "LinkedIn Cover (1584x396)": { w: 1584, h: 396 },
+    "Twitter Header (1500x500)": { w: 1500, h: 500 },
+    "Web Banner 1.91:1 (1200x630)": { w: 1200, h: 630 },
+    "A4 Print (2480x3508)": { w: 2480, h: 3508 },
     "Deck Slide (1920x1080)": { w: 1920, h: 1080 },
     "Poster (1400x2000)": { w: 1400, h: 2e3 },
   },
@@ -16104,10 +16108,23 @@ function Se() {
     V = (e) => {
       let t = e.target.files?.[0];
       if (!t) return;
-      let n = new Image();
-      ((n.onload = () => S(n)),
-        (n.src = URL.createObjectURL(t)),
-        (e.target.value = ``));
+      if (t.type.startsWith(`video/`)) {
+        let n = document.createElement(`video`);
+        n.src = URL.createObjectURL(t);
+        n.muted = !0;
+        n.loop = !0;
+        n.playsInline = !0;
+        n.autoplay = !0;
+        n.onloadeddata = () => {
+          n.play();
+          S(n);
+        };
+      } else {
+        let n = new Image();
+        ((n.onload = () => S(n)),
+          (n.src = URL.createObjectURL(t)));
+      }
+      e.target.value = ``;
     },
     Pe = () => {
       if (!x) return;
@@ -16352,14 +16369,27 @@ function Se() {
               cursor: `pointer`,
             },
             children: [
-              x ? `Replace Image` : `Upload Image`,
+              x ? (x instanceof HTMLVideoElement ? `Upload Video` : `Upload Image`) : `Upload Image / Video`,
               (0, f.jsx)(`input`, {
                 type: `file`,
-                accept: `image/*`,
+                accept: `image/png,image/jpeg,image/webp,image/gif,video/mp4,video/webm,video/ogg,video/quicktime,.png,.jpg,.jpeg,.webp,.gif,.mp4,.webm,.ogg,.mov`,
                 onChange: V,
                 style: { display: `none` },
               }),
             ],
+          }),
+          x && x instanceof HTMLVideoElement && (0, f.jsx)(`button`, {
+            onClick: () => {
+              if (x.paused) x.play(); else x.pause();
+            },
+            style: {
+              ...Ue(!1),
+              width: `100%`,
+              marginBottom: 4,
+              background: `#333`,
+              color: `#fff`
+            },
+            children: `Play / Pause Video`
           }),
           x &&
             (0, f.jsxs)(f.Fragment, {
@@ -16824,6 +16854,10 @@ var Ce = {
     "Square (1080x1080)": { w: 1080, h: 1080 },
     "Landscape 16:9 (1920x1080)": { w: 1920, h: 1080 },
     "Instagram Story (1080x1920)": { w: 1080, h: 1920 },
+    "LinkedIn Cover (1584x396)": { w: 1584, h: 396 },
+    "Twitter Header (1500x500)": { w: 1500, h: 500 },
+    "Web Banner 1.91:1 (1200x630)": { w: 1200, h: 630 },
+    "A4 Print (2480x3508)": { w: 2480, h: 3508 },
     "Poster (1400x2000)": { w: 1400, h: 2e3 },
   },
   we = {
@@ -16871,15 +16905,15 @@ function Oe(e, t, n, r) {
   let i = document.createElement(`canvas`);
   ((i.width = t), (i.height = n));
   let a = i.getContext(`2d`),
-    o = e.width / e.height,
+    o = (e.videoWidth || e.width) / (e.videoHeight || e.height),
     s = t / n,
     c,
     l,
     u,
     d;
   (o > s
-    ? ((d = e.height), (u = d * s), (c = (e.width - u) / 2), (l = 0))
-    : ((u = e.width), (d = u / s), (c = 0), (l = (e.height - d) / 2)),
+    ? ((d = e.videoHeight || e.height), (u = d * s), (c = ((e.videoWidth || e.width) - u) / 2), (l = 0))
+    : ((u = e.videoWidth || e.width), (d = u / s), (c = 0), (l = ((e.videoHeight || e.height) - d) / 2)),
     a.drawImage(e, c, l, u, d, 0, 0, t, n));
   let f = a.getImageData(0, 0, t, n).data,
     p = r.blockSize || 16,
@@ -17077,15 +17111,15 @@ function Ne(e, t, n, r) {
 }
 function B(e, t, n, r, i, a, o, s, c, l, u) {
   if (((e.fillStyle = o.bg), e.fillRect(0, 0, t, n), r)) {
-    let i = r.width / r.height,
+    let i = (r.videoWidth || r.width) / (r.videoHeight || r.height),
       a = t / n,
       o,
       c,
       l,
       u;
     (i > a
-      ? ((u = r.height), (l = u * a), (o = (r.width - l) / 2), (c = 0))
-      : ((l = r.width), (u = l / a), (o = 0), (c = (r.height - u) / 2)),
+      ? ((u = r.videoHeight || r.height), (l = u * a), (o = ((r.videoWidth || r.width) - l) / 2), (c = 0))
+      : ((l = r.videoWidth || r.width), (u = l / a), (o = 0), (c = ((r.videoHeight || r.height) - u) / 2)),
       (e.globalAlpha = s.imageOpacity),
       e.drawImage(r, o, c, l, u, 0, 0, t, n),
       (e.globalAlpha = 1));
@@ -17298,6 +17332,11 @@ function Pe() {
     [n, r] = (0, l.useState)(`Portrait 3:4 (1200x1600)`),
     [i, a] = (0, l.useState)(`whiteOnDark`),
     [o, s] = (0, l.useState)(null),
+    [recording, setRecording] = (0, l.useState)(false),
+    [recordedTime, setRecordedTime] = (0, l.useState)(0),
+    mediaRecorderRef = (0, l.useRef)(null),
+    recordedChunksRef = (0, l.useRef)([]),
+    recordingTimerRef = (0, l.useRef)(null),
     [c, u] = (0, l.useState)({ w: 800, h: 600 }),
     [d, p] = (0, l.useState)([]),
     [m, h] = (0, l.useState)(null),
@@ -17396,13 +17435,39 @@ function Pe() {
   (0, l.useEffect)(() => {
     A();
   }, [A]);
+  (0, l.useEffect)(() => {
+    if (!o || !(o instanceof HTMLVideoElement)) return;
+    let active = true;
+    let renderLoop = () => {
+      if (!active) return;
+      A();
+      requestAnimationFrame(renderLoop);
+    };
+    renderLoop();
+    return () => {
+      active = false;
+    };
+  }, [o, A]);
   let j = (e) => {
       let t = e.target.files?.[0];
       if (!t) return;
-      let n = new Image();
-      ((n.onload = () => s(n)),
-        (n.src = URL.createObjectURL(t)),
-        (e.target.value = ``));
+      if (t.type.startsWith(`video/`)) {
+        let n = document.createElement(`video`);
+        n.src = URL.createObjectURL(t);
+        n.muted = !0;
+        n.loop = !0;
+        n.playsInline = !0;
+        n.autoplay = !0;
+        n.onloadeddata = () => {
+          n.play();
+          s(n);
+        };
+      } else {
+        let n = new Image();
+        ((n.onload = () => s(n)),
+          (n.src = URL.createObjectURL(t)));
+      }
+      e.target.value = ``;
     },
     ee = (e) => {
       let t = e.target.files?.[0];
@@ -17472,6 +17537,63 @@ function Pe() {
       ((f.download = `${u}/${d}`),
         (f.href = t.toDataURL(`image/png`)),
         f.click());
+    },
+    startRecording = () => {
+      let t = e.current;
+      if (!t) return;
+      recordedChunksRef.current = [];
+      setRecordedTime(0);
+      let n = t.captureStream(30), r = { mimeType: `video/webm;codecs=vp9` };
+      if (!MediaRecorder.isTypeSupported(r.mimeType)) {
+        r = { mimeType: `video/webm;codecs=vp8` };
+      }
+      if (!MediaRecorder.isTypeSupported(r.mimeType)) {
+        r = { mimeType: `video/webm` };
+      }
+      try {
+        let i = new MediaRecorder(n, r);
+        i.ondataavailable = (e) => {
+          if (e.data && e.data.size > 0) {
+            recordedChunksRef.current.push(e.data);
+          }
+        };
+        i.onstop = () => {
+          let e = new Blob(recordedChunksRef.current, { type: `video/webm` }),
+            n = URL.createObjectURL(e),
+            r = new Date(),
+            i = (e) => e.toString().padStart(2, `0`),
+            a = r.getFullYear(),
+            o = i(r.getMonth() + 1),
+            s = i(r.getDate()),
+            c = i(r.getHours()),
+            l = i(r.getMinutes()),
+            u = i(r.getSeconds()),
+            d = `YS_Generator_${a}_${o}_${s}_${c}_${l}_${u}.webm`,
+            f = document.createElement(`a`);
+          ((f.download = d),
+            (f.href = n),
+            f.click());
+        };
+        mediaRecorderRef.current = i;
+        i.start();
+        setRecording(!0);
+        let a = Date.now();
+        recordingTimerRef.current = setInterval(() => {
+          setRecordedTime((Date.now() - a) / 1000);
+        }, 100);
+      } catch (e) {
+        console.error("Failed to start MediaRecorder:", e);
+        alert("Video recording is not supported in this browser or environment.");
+      }
+    },
+    stopRecording = () => {
+      if (mediaRecorderRef.current && mediaRecorderRef.current.state !== `inactive`) {
+        mediaRecorderRef.current.stop();
+      }
+      if (recordingTimerRef.current) {
+        clearInterval(recordingTimerRef.current);
+      }
+      setRecording(!1);
     },
     N = (e) => (t) => y((n) => ({ ...n, [e]: t })),
     P = (e) => ({
@@ -17618,14 +17740,37 @@ function Pe() {
                     cursor: `pointer`,
                   },
                   children: [
-                    o ? `Replace Image` : `Upload Image`,
+                    o ? (o instanceof HTMLVideoElement ? `Upload Video` : `Upload Image`) : `Upload Image / Video`,
                     (0, f.jsx)(`input`, {
                       type: `file`,
-                      accept: `image/*`,
+                      accept: `image/png,image/jpeg,image/webp,image/gif,video/mp4,video/webm,video/ogg,video/quicktime,.png,.jpg,.jpeg,.webp,.gif,.mp4,.webm,.ogg,.mov`,
                       onChange: j,
                       style: { display: `none` },
                     }),
                   ],
+                }),
+                (0, f.jsx)(`div`, {
+                  style: {
+                    fontSize: 8,
+                    fontFamily: `Telegraf, system-ui, sans-serif`,
+                    color: `#bbb`,
+                    marginBottom: 8,
+                    textAlign: `center`,
+                  },
+                  children: `Supported formats: PNG, JPG, WEBP, GIF, MP4, WEBM, MOV`,
+                }),
+                o && o instanceof HTMLVideoElement && (0, f.jsx)(`button`, {
+                  onClick: () => {
+                    if (o.paused) o.play(); else o.pause();
+                  },
+                  style: {
+                    ...P(!1),
+                    width: `100%`,
+                    marginBottom: 8,
+                    background: `#333`,
+                    color: `#fff`
+                  },
+                  children: `Play / Pause Video`
                 }),
                 (0, f.jsxs)(`select`, {
                   defaultValue: ``,
@@ -18178,16 +18323,34 @@ function Pe() {
             }),
           (0, f.jsx)(L, { name: `export`, children: `Export` }),
           !F.export &&
-            (0, f.jsx)(`button`, {
-              onClick: M,
-              style: {
-                ...P(!1),
-                width: `100%`,
-                background: `#222`,
-                color: `#fff`,
-                border: `1.5px solid #222`,
-              },
-              children: `Download PNG`,
+            (0, f.jsxs)(f.Fragment, {
+              children: [
+                (0, f.jsx)(`button`, {
+                  onClick: M,
+                  style: {
+                    ...P(!1),
+                    width: `100%`,
+                    background: `#222`,
+                    color: `#fff`,
+                    border: `1.5px solid #222`,
+                    marginBottom: 6,
+                  },
+                  children: `Download PNG`,
+                }),
+                (0, f.jsx)(`button`, {
+                  onClick: recording ? stopRecording : startRecording,
+                  style: {
+                    ...P(!1),
+                    width: `100%`,
+                    background: recording ? `#d32f2f` : `#0077ff`,
+                    color: `#fff`,
+                    border: recording ? `1.5px solid #d32f2f` : `1.5px solid #0077ff`,
+                  },
+                  children: recording
+                    ? `Stop & Download Video (${recordedTime.toFixed(1)}s)`
+                    : `Record Video Output`,
+                }),
+              ],
             }),
           (0, f.jsx)(`div`, {
             style: {

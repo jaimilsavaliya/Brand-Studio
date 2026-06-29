@@ -1,0 +1,316 @@
+/* ============================================================
+   BRAND STUDIO — DARK THEME OVERRIDE v1.0
+   Target UI: dark terminal aesthetic with orange accent
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+
+/* -- Variables ----------------------------------------------- */
+:root {
+  --bg-root:       #0c0c0c;
+  --bg-sidebar:    #111111;
+  --bg-canvas:     #141414;
+  --bg-card:       #1a1a1a;
+  --bg-input:      #1e1e1e;
+  --bg-hover:      #252525;
+  --border:        #2a2a2a;
+  --border-bright: #333333;
+  --accent:        #ff4d00;
+  --accent-dim:    rgba(255, 77, 0, 0.15);
+  --accent-hover:  #ff6620;
+  --text-primary:  #e8e8e8;
+  --text-secondary:#888888;
+  --text-muted:    #444444;
+  --text-label:    #5a5a5a;
+  --mono: 'Space Mono', 'Telegraf', monospace;
+}
+
+/* -- Global --------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body, #root {
+  background: var(--bg-root) !important;
+  color: var(--text-primary) !important;
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg-sidebar); }
+::-webkit-scrollbar-thumb { background: var(--border-bright); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* -- Root wrapper --------------------------------------------- */
+#root > div > div {
+  background: var(--bg-root) !important;
+  font-family: var(--mono) !important;
+}
+
+/* -- Sidebar panel -------------------------------------------- */
+#root > div > div > div:first-child {
+  background: var(--bg-sidebar) !important;
+  border-right: 1px solid var(--border) !important;
+  position: relative !important;
+}
+
+#root > div > div > div:first-child::before {
+  content: '';
+  display: block;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+/* -- Sidebar text --------------------------------------------- */
+#root > div > div > div:first-child * {
+  font-family: var(--mono) !important;
+}
+
+/* -- SYSTEM CORRELATOR bar ------------------------------------ */
+body::before {
+  content: '? SYSTEM CORRELATOR: LIVE_CORE';
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  color: var(--text-label);
+  padding: 4px 18px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-top: none;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+/* -- Canvas main area ----------------------------------------- */
+#root > div > div > div:last-child {
+  background: var(--bg-canvas) !important;
+}
+
+/* -- Canvas metadata overlay text ----------------------------- */
+#root > div > div > div:last-child div[style*="position: absolute"] {
+  color: var(--text-label) !important;
+  font-family: var(--mono) !important;
+  font-size: 9px !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+}
+
+/* -- All buttons ---------------------------------------------- */
+button {
+  font-family: var(--mono) !important;
+  font-size: 10px !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  border-radius: 0 !important;
+  transition: all 0.15s ease !important;
+}
+
+/* Outline buttons */
+button[style*="background: transparent"],
+button[style*="background:transparent"] {
+  background: transparent !important;
+  color: var(--text-secondary) !important;
+  border-color: var(--border-bright) !important;
+}
+button[style*="background: transparent"]:hover {
+  background: var(--bg-hover) !important;
+  color: var(--accent) !important;
+  border-color: var(--accent) !important;
+}
+
+/* Dark filled buttons */
+button[style*="background: #222"],
+button[style*="background:#222"] {
+  background: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-bright) !important;
+}
+button[style*="background: #222"]:hover,
+button[style*="background:#222"]:hover {
+  background: var(--accent) !important;
+  color: #fff !important;
+  border-color: var(--accent) !important;
+}
+
+/* Play/Pause video button */
+button[style*="background: #333"],
+button[style*="background:#333"] {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border-bright) !important;
+  color: var(--text-secondary) !important;
+}
+button[style*="background: #333"]:hover {
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+}
+
+/* Record video button (blue -> accent orange) */
+button[style*="background: #0077ff"],
+button[style*="background:#0077ff"] {
+  background: var(--accent) !important;
+  border-color: var(--accent) !important;
+  color: #fff !important;
+}
+button[style*="background: #0077ff"]:hover {
+  background: var(--accent-hover) !important;
+}
+
+/* Stop recording (red -> dark red pulsing) */
+button[style*="background: #d32f2f"],
+button[style*="background:#d32f2f"] {
+  background: #b71c1c !important;
+  border-color: #b71c1c !important;
+  animation: pulse-red 1.4s ease infinite;
+}
+@keyframes pulse-red {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(183,28,28,0.5); }
+  50%       { box-shadow: 0 0 0 6px rgba(183,28,28,0); }
+}
+
+/* Chaos/accent toggle buttons */
+button[style*="border: 1.5px solid #555"] {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border-bright) !important;
+  color: var(--text-secondary) !important;
+}
+button[style*="border: 1.5px solid #555"]:hover {
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+}
+
+/* -- Section headers ------------------------------------------ */
+div[style*="textTransform: uppercase"][style*="letterSpacing"],
+div[style*="text-transform: uppercase"][style*="letter-spacing"] {
+  font-family: var(--mono) !important;
+  font-size: 8px !important;
+  letter-spacing: 0.18em !important;
+  color: var(--text-label) !important;
+  border-top-color: var(--border) !important;
+}
+
+div[style*="textTransform: uppercase"] span:last-child {
+  color: var(--accent) !important;
+}
+
+/* -- Select dropdowns ------------------------------------------ */
+select {
+  background: var(--bg-input) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-bright) !important;
+  border-radius: 0 !important;
+  font-family: var(--mono) !important;
+  font-size: 10px !important;
+  letter-spacing: 0.04em !important;
+  cursor: pointer !important;
+  outline: none !important;
+}
+select:focus {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 2px var(--accent-dim) !important;
+}
+select option {
+  background: var(--bg-input) !important;
+  color: var(--text-primary) !important;
+}
+
+/* -- Range sliders --------------------------------------------- */
+input[type="range"] {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  height: 2px !important;
+  background: var(--border-bright) !important;
+  outline: none !important;
+  border-radius: 0 !important;
+  cursor: pointer !important;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none !important;
+  width: 12px !important;
+  height: 12px !important;
+  border-radius: 50% !important;
+  background: var(--accent) !important;
+  cursor: pointer !important;
+  border: 2px solid var(--bg-sidebar) !important;
+  box-shadow: 0 0 0 1px var(--accent) !important;
+  transition: transform 0.1s, box-shadow 0.1s !important;
+}
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.35) !important;
+  box-shadow: 0 0 0 1px var(--accent), 0 0 8px var(--accent-dim) !important;
+}
+input[type="range"]::-moz-range-thumb {
+  width: 12px !important;
+  height: 12px !important;
+  border-radius: 50% !important;
+  background: var(--accent) !important;
+  border: 2px solid var(--bg-sidebar) !important;
+}
+
+/* -- Number inputs --------------------------------------------- */
+input[type="number"], input[type="text"] {
+  background: var(--bg-input) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-bright) !important;
+  font-family: var(--mono) !important;
+  font-size: 10px !important;
+  outline: none !important;
+}
+input[type="number"]:focus, input[type="text"]:focus {
+  border-color: var(--accent) !important;
+}
+
+/* -- Label buttons (upload) ----------------------------------- */
+label[style] {
+  background: var(--bg-input) !important;
+  color: var(--text-secondary) !important;
+  border: 1px solid var(--border-bright) !important;
+  font-family: var(--mono) !important;
+  font-size: 10px !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  transition: all 0.15s !important;
+  border-radius: 0 !important;
+}
+label[style]:hover {
+  background: var(--bg-hover) !important;
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+}
+
+/* -- Dividers / borders --------------------------------------- */
+div[style*="borderTop"], div[style*="border-top"] {
+  border-top-color: var(--border) !important;
+}
+
+/* -- Hint text ------------------------------------------------- */
+div[style*="color: #bbb"], div[style*="color: #aaa"],
+div[style*="color:#bbb"], div[style*="color:#aaa"] {
+  color: var(--text-label) !important;
+  font-family: var(--mono) !important;
+}
+
+/* -- Canvas shadow --------------------------------------------- */
+canvas {
+  box-shadow: 0 0 80px rgba(0,0,0,0.9), 0 0 1px rgba(255,255,255,0.03) !important;
+}
+
+/* -- Checkbox -------------------------------------------------- */
+input[type="checkbox"] {
+  accent-color: var(--accent) !important;
+}
+
+/* -- Fade-in animation for sidebar content --------------------- */
+@keyframes bsFadeIn {
+  from { opacity: 0; transform: translateY(3px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+#root > div > div > div:first-child > * {
+  animation: bsFadeIn 0.2s ease both;
+}

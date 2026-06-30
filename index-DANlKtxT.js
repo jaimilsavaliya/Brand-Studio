@@ -17246,16 +17246,16 @@ function B(e, t, n, r, i, a, o, s, c, l, u) {
     (e.font = `${f}px Telegraf, system-ui, sans-serif`),
     (e.textAlign = `left`),
     (e.textBaseline = `top`),
-    e.fillText(`Design & Strategy`, 40, 40),
+    e.fillText(s.frameTextTopLeft !== undefined ? s.frameTextTopLeft : `Design & Strategy`, 40, 40),
     (e.textAlign = `right`),
     (e.textBaseline = `top`),
-    e.fillText(`Brand Studio`, t - 40, 40),
+    e.fillText(s.frameTextTopRight !== undefined ? s.frameTextTopRight : `Brand Studio`, t - 40, 40),
     (e.textAlign = `left`),
     (e.textBaseline = `bottom`),
-    e.fillText(`Asset Generator`, 40, n - 40),
+    e.fillText(s.frameTextBottomLeft !== undefined ? s.frameTextBottomLeft : `Asset Generator`, 40, n - 40),
     (e.textAlign = `right`),
     (e.textBaseline = `bottom`),
-    e.fillText(`Local App`, t - 40, n - 40),
+    e.fillText(s.frameTextBottomRight !== undefined ? s.frameTextBottomRight : `Local App`, t - 40, n - 40),
     l &&
     u > 0 &&
     ((e.globalCompositeOperation = `screen`),
@@ -17273,33 +17273,40 @@ function V({
   step: a = 0.1,
   hint: o,
 }) {
+  let valStr = a >= 1 ? Math.floor(t) : t.toFixed(a < 0.1 ? 2 : 1);
+  if (e.toLowerCase().includes("opacity") || e.toLowerCase().includes("intensity") || e.toLowerCase().includes("blend")) {
+    valStr = Math.round(t * 100) + "%";
+  } else if (e.toLowerCase().includes("size") || e.toLowerCase().includes("radius") || e.toLowerCase().includes("distance") || e.toLowerCase().includes("weight") || e.toLowerCase().includes("stroke")) {
+    valStr = Math.floor(t) + "PX";
+  }
   return (0, f.jsxs)(`div`, {
-    style: { marginBottom: 14 },
+    style: { marginBottom: 16 },
     children: [
       (0, f.jsxs)(`div`, {
         style: {
           display: `flex`,
           justifyContent: `space-between`,
-          marginBottom: o ? 2 : 4,
+          marginBottom: o ? 3 : 6,
         },
         children: [
           (0, f.jsx)(`span`, {
             style: {
-              fontSize: 10,
-              fontFamily: `Telegraf, system-ui, sans-serif`,
+              fontSize: 9,
+              fontFamily: `'Space Mono', monospace`,
               textTransform: `uppercase`,
-              letterSpacing: `0.08em`,
-              color: `#777`,
+              letterSpacing: `0.1em`,
+              color: `#888`,
             },
             children: e,
           }),
           (0, f.jsx)(`span`, {
             style: {
-              fontSize: 10,
-              fontFamily: `Telegraf, system-ui, sans-serif`,
-              color: `#555`,
+              fontSize: 9,
+              fontFamily: `'Space Mono', monospace`,
+              color: `#ff4d00`,
+              fontWeight: 700,
             },
-            children: a >= 1 ? Math.floor(t) : t.toFixed(a < 0.1 ? 2 : 1),
+            children: valStr,
           }),
         ],
       }),
@@ -17307,10 +17314,11 @@ function V({
       (0, f.jsx)(`div`, {
         style: {
           fontSize: 8,
-          fontFamily: `Telegraf, system-ui, sans-serif`,
-          color: `#bbb`,
-          marginBottom: 4,
+          fontFamily: `'Space Mono', monospace`,
+          color: `#777`,
+          marginBottom: 6,
           lineHeight: 1.4,
+          letterSpacing: `0.02em`,
         },
         children: o,
       }),
@@ -17321,7 +17329,7 @@ function V({
         step: a,
         value: t,
         onChange: (e) => n(parseFloat(e.target.value)),
-        style: { width: `100%`, accentColor: `#888` },
+        style: { width: `100%`, accentColor: `#ff4d00`, cursor: `pointer` },
       }),
     ],
   });
@@ -17720,7 +17728,8 @@ function Pe() {
             style: {
               fontSize: 8,
               fontFamily: `'Space Mono', monospace`,
-              color: `#444`,
+              color: `#ff4d00`,
+              opacity: 0.6,
               marginBottom: 12,
               lineHeight: 1.5,
               letterSpacing: `0.06em`,
@@ -17888,14 +17897,122 @@ function Pe() {
           }),
           (0, f.jsx)(L, { name: `frameText`, children: `Frame Text` }),
           !F.frameText &&
-          (0, f.jsx)(V, {
-            label: `Text Size`,
-            value: v.frameTextSize,
-            onChange: N(`frameTextSize`),
-            min: 6,
-            max: 40,
-            step: 1,
-            hint: `Font size of the 4 corner labels`,
+          (0, f.jsxs)(f.Fragment, {
+            children: [
+              (0, f.jsx)(V, {
+                label: `Text Size`,
+                value: v.frameTextSize,
+                onChange: N(`frameTextSize`),
+                min: 6,
+                max: 40,
+                step: 1,
+                hint: `Font size of the 4 corner labels`,
+              }),
+              (0, f.jsxs)(`div`, {
+                style: { marginBottom: 10 },
+                children: [
+                  (0, f.jsx)(`div`, {
+                    style: {
+                      fontSize: 8,
+                      fontFamily: `'Space Mono', monospace`,
+                      textTransform: `uppercase`,
+                      color: `#666`,
+                      marginBottom: 4,
+                      letterSpacing: `0.05em`,
+                    },
+                    children: `Top Left`,
+                  }),
+                  (0, f.jsx)(`input`, {
+                    type: `text`,
+                    value: v.frameTextTopLeft !== undefined ? v.frameTextTopLeft : `Design & Strategy`,
+                    onChange: (e) => y((t) => ({ ...t, frameTextTopLeft: e.target.value })),
+                    style: {
+                      width: `100%`,
+                      padding: `6px 8px`,
+                      marginBottom: 8,
+                    },
+                  }),
+                ],
+              }),
+              (0, f.jsxs)(`div`, {
+                style: { marginBottom: 10 },
+                children: [
+                  (0, f.jsx)(`div`, {
+                    style: {
+                      fontSize: 8,
+                      fontFamily: `'Space Mono', monospace`,
+                      textTransform: `uppercase`,
+                      color: `#666`,
+                      marginBottom: 4,
+                      letterSpacing: `0.05em`,
+                    },
+                    children: `Top Right`,
+                  }),
+                  (0, f.jsx)(`input`, {
+                    type: `text`,
+                    value: v.frameTextTopRight !== undefined ? v.frameTextTopRight : `Brand Studio`,
+                    onChange: (e) => y((t) => ({ ...t, frameTextTopRight: e.target.value })),
+                    style: {
+                      width: `100%`,
+                      padding: `6px 8px`,
+                      marginBottom: 8,
+                    },
+                  }),
+                ],
+              }),
+              (0, f.jsxs)(`div`, {
+                style: { marginBottom: 10 },
+                children: [
+                  (0, f.jsx)(`div`, {
+                    style: {
+                      fontSize: 8,
+                      fontFamily: `'Space Mono', monospace`,
+                      textTransform: `uppercase`,
+                      color: `#666`,
+                      marginBottom: 4,
+                      letterSpacing: `0.05em`,
+                    },
+                    children: `Bottom Left`,
+                  }),
+                  (0, f.jsx)(`input`, {
+                    type: `text`,
+                    value: v.frameTextBottomLeft !== undefined ? v.frameTextBottomLeft : `Asset Generator`,
+                    onChange: (e) => y((t) => ({ ...t, frameTextBottomLeft: e.target.value })),
+                    style: {
+                      width: `100%`,
+                      padding: `6px 8px`,
+                      marginBottom: 8,
+                    },
+                  }),
+                ],
+              }),
+              (0, f.jsxs)(`div`, {
+                style: { marginBottom: 12 },
+                children: [
+                  (0, f.jsx)(`div`, {
+                    style: {
+                      fontSize: 8,
+                      fontFamily: `'Space Mono', monospace`,
+                      textTransform: `uppercase`,
+                      color: `#666`,
+                      marginBottom: 4,
+                      letterSpacing: `0.05em`,
+                    },
+                    children: `Bottom Right`,
+                  }),
+                  (0, f.jsx)(`input`, {
+                    type: `text`,
+                    value: v.frameTextBottomRight !== undefined ? v.frameTextBottomRight : `Local App`,
+                    onChange: (e) => y((t) => ({ ...t, frameTextBottomRight: e.target.value })),
+                    style: {
+                      width: `100%`,
+                      padding: `6px 8px`,
+                      marginBottom: 8,
+                    },
+                  }),
+                ],
+              }),
+            ],
           }),
           (0, f.jsx)(L, { name: `crosshair`, children: `Crosshair Frame` }),
           !F.crosshair &&
@@ -18426,7 +18543,7 @@ function Pe() {
               },
             }),
           }),
-          (0, f.jsxs)(`div`, {
+          (0, f.jsx)(`div`, {
             style: {
               position: `absolute`,
               left: 18,
@@ -18437,14 +18554,37 @@ function Pe() {
               letterSpacing: `0.12em`,
               textTransform: `uppercase`,
               pointerEvents: `none`,
-              display: `flex`,
-              gap: 24,
             },
-            children: [
-              (0, f.jsxs)(`span`, { children: [`RES: `, x.w, `x`, x.h] }),
-              (0, f.jsx)(`span`, { children: `CLICK STAGE TO PAINT` }),
-              (0, f.jsxs)(`span`, { children: [`FORMAT: `, b.name.toUpperCase()] }),
-            ],
+            children: `RES: ${x.w}X${x.h}`,
+          }),
+          (0, f.jsx)(`div`, {
+            style: {
+              position: `absolute`,
+              left: `50%`,
+              transform: `translateX(-50%)`,
+              bottom: 14,
+              fontSize: 9,
+              fontFamily: `'Space Mono', monospace`,
+              color: `#3a3a3a`,
+              letterSpacing: `0.12em`,
+              textTransform: `uppercase`,
+              pointerEvents: `none`,
+            },
+            children: `CLICK STAGE TO PAINT`,
+          }),
+          (0, f.jsx)(`div`, {
+            style: {
+              position: `absolute`,
+              right: 18,
+              bottom: 14,
+              fontSize: 9,
+              fontFamily: `'Space Mono', monospace`,
+              color: `#3a3a3a`,
+              letterSpacing: `0.12em`,
+              textTransform: `uppercase`,
+              pointerEvents: `none`,
+            },
+            children: `FORMAT: ${o && o instanceof HTMLVideoElement ? 'WEBM' : 'PNG'}`,
           }),
         ],
       }),
